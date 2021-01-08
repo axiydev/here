@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "245215403899",
+    "firebase_url": "https://here-3bc55-default-rtdb.firebaseio.com",
+    "project_id": "here-3bc55",
+    "storage_bucket": "here-3bc55.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:245215403899:android:723a56d0343bb3e841e7de",
+        "android_client_info": {
+          "package_name": "com.example.here"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "245215403899-623u9hc47mquv0ad62oss26uurcdv3i7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHsN-NKnbSHxXQZ9XdugLoIooP8yDHd1c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "245215403899-623u9hc47mquv0ad62oss26uurcdv3i7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "245215403899-dm1lgt06k7i6b7nskp7kts84l2qa03vq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.here"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
