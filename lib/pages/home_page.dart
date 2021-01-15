@@ -13,6 +13,7 @@ class HomePage extends StatefulWidget{
   _HomePageState createState()=>_HomePageState();
 }
 class _HomePageState extends State<HomePage>{
+  bool isLoading=false;
   List<Post> lt=new List();
   @override
   void initState(){
@@ -31,11 +32,15 @@ class _HomePageState extends State<HomePage>{
     }
   }
   _apiGetPosts()async{
+    setState(() {
+      isLoading=true;
+    });
     var id=await Prefs.loadUserId();
-    RTDBService.getPosts(id).then((post)=>{_loadPosts(post)}).catchError((err)=>print('THIS IS ERROR1'));
+    RTDBService.getPosts(id).then((post){_loadPosts(post);}).catchError((err)=>print('THIS IS ERROR1'));
   }
   _loadPosts(post)async{
     setState(() {
+      isLoading=false;
       lt=post.toList();
     });
   }
@@ -55,10 +60,20 @@ class _HomePageState extends State<HomePage>{
           ),
         ],
       ),
-      body:Container(
-        padding: EdgeInsets.all(20),
-        //#ListView
-        child: _myWidget(),
+      body:SafeArea(
+        child:Stack(
+          children: [
+            //#mainscreen
+            Container(
+              padding: EdgeInsets.only(left: 15,right: 15,top: 10),
+              //#ListView
+              child: _myWidget(),
+            ),
+            if(isLoading)Center(
+              child:CircularProgressIndicator(strokeWidth: 8,),
+            ),
+          ],
+        ),
       ),
       floatingActionButton:FloatingActionButton(
         child:Icon(Icons.add),
@@ -81,31 +96,43 @@ class _HomePageState extends State<HomePage>{
     return Container(
       width: double.infinity,
       margin: EdgeInsets.only(bottom:20),
-      child:RichText(
-        textAlign: TextAlign.start,
-        text:TextSpan(
-          text:'${post.firstName} ${post.secondName}\n',
-          style:Theme.of(context).textTheme.headline1.copyWith(
-              fontSize: 27,
-              letterSpacing: 0.5,
-              height:1.3,
-              fontWeight: FontWeight.w400
+      child:Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children:[
+          //#post image
+          Container(
+            width: double.infinity,
+            height:250,
+            child:post.img_url!=null?Image.network(post.img_url,fit: BoxFit.cover,):Image.asset('assets/images/ic_default.png',fit: BoxFit.cover,),
           ),
-          children: [
-            TextSpan(
-              text: '${post.dateTime.toString().substring(0,10)}\n',
-              style:Theme.of(context).textTheme.headline3.copyWith(
-                fontSize: 15,
+          //#post title
+          RichText(
+            textAlign: TextAlign.start,
+            text:TextSpan(
+              text:'${post.firstName} ${post.secondName}\n',
+              style:Theme.of(context).textTheme.headline1.copyWith(
+                  fontSize: 25,
+                  letterSpacing: 0.3,
+                  height:1.3,
+                  fontWeight: FontWeight.w400
               ),
+              children: [
+                TextSpan(
+                  text: '${post.dateTime.toString().substring(0,10)}\n',
+                  style:Theme.of(context).textTheme.headline3.copyWith(
+                    fontSize: 15,
+                  ),
+                ),
+                TextSpan(
+                  text:'${post.content}',
+                  style: Theme.of(context).textTheme.headline2.copyWith(
+                    fontSize: 20,
+                  ),
+                ),
+              ],
             ),
-            TextSpan(
-              text:'${post.content}',
-              style: Theme.of(context).textTheme.headline2.copyWith(
-                fontSize: 20,
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
